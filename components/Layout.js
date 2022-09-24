@@ -19,8 +19,18 @@ import jsCookie from 'js-cookie';
 import { Store } from '../utils/Store';
 
 export default function Layout({ title, description, children }) {
+  const [showInfo, setShowInfo] = useState(false);
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo } = state;
+
+  useEffect(() => {
+    setShowInfo(true);
+  }, []);
+
+  if (!showInfo) {
+    return null;
+  }
+
   const theme = createTheme({
     components: {
       MuiLink: {
