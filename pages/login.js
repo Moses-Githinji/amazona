@@ -11,42 +11,42 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-// import { useSnackbar } from 'notistack';
-// import axios from 'axios';
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
 import { Store } from '../utils/Store';
-// import { useRouter } from 'next/router';
-// import jsCookie from 'js-cookie';
-// import { getError } from '../utils/error';
+import { useRouter } from 'next/router';
+import jsCookie from 'js-cookie';
+import { getError } from '../utils/error';
 
 export default function LoginScreen() {
   const { state, dispatch } = useContext(Store);
-  //   const { userInfo } = state;
-  //   const router = useRouter();
-  //   const { redirect } = router.query;
-  //   useEffect(() => {
-  //     if (userInfo) {
-  //       router.push(redirect || '/');
-  //     }
-  //   }, [router, userInfo, redirect]);
+  const { userInfo } = state;
+  const router = useRouter();
+  const { redirect } = router.query;
+  useEffect(() => {
+    if (userInfo) {
+      router.push(redirect || '/');
+    }
+  }, [router, userInfo, redirect]);
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
 
-  //   const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const submitHandler = async ({ email, password }) => {
-    //   try {
-    //     const { data } = await axios.post('/api/users/login', {
-    //       email,
-    //       password,
-    //     });
-    //     dispatch({ type: 'USER_LOGIN', payload: data });
-    //     jsCookie.set('userInfo', JSON.stringify(data));
-    //     router.push(redirect || '/');
-    //   } catch (err) {
-    //     enqueueSnackbar(getError(err), { variant: 'error' });
-    //   }
+    try {
+      const { data } = await axios.post('/api/users/login', {
+        email,
+        password,
+      });
+      dispatch({ type: 'USER_LOGIN', payload: data });
+      jsCookie.set('userInfo', JSON.stringify(data));
+      router.push(redirect || '/');
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
   };
   return (
     <Layout title="Login">
@@ -120,7 +120,7 @@ export default function LoginScreen() {
           </ListItem>
           <ListItem>
             Do not have an account?{' '}
-            <NextLink href={`/register`} passHref>
+            <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
               <Link>Register</Link>
             </NextLink>
           </ListItem>
@@ -129,4 +129,4 @@ export default function LoginScreen() {
     </Layout>
   );
 }
-// ?redirect=${redirect || '/'}
+//

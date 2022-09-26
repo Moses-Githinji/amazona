@@ -22,13 +22,13 @@ export default function RegisterScreen() {
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   const router = useRouter();
-  // const { redirect } = router.query;
+  const { redirect } = router.query;
 
   useEffect(() => {
     if (userInfo) {
-      router.push('/');
-    } // redirect redirect ||
-  }, [router, userInfo]);
+      router.push(redirect || '/');
+    }
+  }, [router, userInfo, redirect]);
 
   const {
     handleSubmit,
@@ -187,7 +187,7 @@ export default function RegisterScreen() {
           </ListItem>
           <ListItem>
             Already have an account?{' '}
-            <NextLink href={`/login`} passHref>
+            <NextLink href={`/login?redirect=${redirect || '/'}`} passHref>
               <Link>Login</Link>
             </NextLink>
           </ListItem>
@@ -196,4 +196,4 @@ export default function RegisterScreen() {
     </Layout>
   );
 }
-// ?redirect=${redirect || '/'}
+//
